@@ -10,8 +10,25 @@
 
 		<!-- Latest compiled JavaScript -->
 		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+		
+		<script src="js/chat.js"></script>
+		<link href="css/chatRoomStyle.css" rel="stylesheet">
 	</head>
 	<body>
+		<div class="container">
+			<div id="messages"></div>
+			<div id="input_message_container">
+				<form class="form-inline" action="" id="form_container">
+					<div class="form-group" id="message_input_container">
+						<input type="text" class="form-control" placeholder="Enter message" id="message" />
+					</div>
+					<button type="submit" class="btn btn-default" id="sendBtn">Send</button>
+				</form>
+			</div>
+			<div id="exitBtn_container">
+                <button type="button" id="exitBtn">Exit Chatroom</button>
+			</div>
+		</div>
 		
 	</body>
 </html>

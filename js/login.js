@@ -38,7 +38,7 @@ function isUserExpired(user) {
 			createUser(user);
 		}
 		else {
-			alert("Username is already in used!");
+			console.log("Username is already in used!");
 		}
 	});
 }
@@ -55,11 +55,19 @@ function deleteUser(user) {
 function createUser(user) {
 	$.post("php/login.php", {username: user}, function(data) {
 		var json = jQuery.parseJSON(data);
+		//If user was successfully created, then enter the chatroom
 		if (json["success"] === true) {
 			alert("Username created!");
+			//alert(json["uid"]);
+			setSession(json["uid"], user);
+			window.location.href = 'chat_room.html';
 		}
 		else {
 			alert("Username could not be created!");
 		}
 	});		
+}
+
+function setSession(uid, user) {
+	$.post("php/setSession.php", {userID: uid, username: user});
 }
