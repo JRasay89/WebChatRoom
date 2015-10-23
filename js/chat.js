@@ -2,6 +2,11 @@ var lastLine_ = 0;
 var lineCount_ = 0;
 
 $(document).ready(function(){
+	$.post("php/session.php", function(data) {
+		var json = jQuery.parseJSON(data);
+		$("#currentUsername").text(json["username"]);
+	});
+	
 	//Post the message to post.php
 	$("#sendBtn").click(function() {
 		var userMsg = $("#message").val();
@@ -15,6 +20,7 @@ $(document).ready(function(){
 		$.post("php/session.php", function(data) {
 				var json = jQuery.parseJSON(data);
 				var user_ = json["username"];
+				$.post("php/logout.php");
 				//Delete user in database
 				$.post("php/deleteUser.php", {username: user_});	
 				//Delete session
@@ -32,21 +38,26 @@ $(document).ready(function(){
 	});
 	
 	//Load chat, update chat every second
-	loadChatLog();
+	//loadChatLog();
 	setInterval (loadChatLog, 1000);
 });
 
 
 function loadChatLog() {
-	//$("#messages").load("chatLog.txt");
+	var lastScrollHeight = $("#chatBox").prop('scrollHeight');
 	$.get("chatLog.txt", function(txt) {
 		var lines = txt.split("\n");
 		var length = lines.length;
 		//If lineCount is less than currentLength, then a new message was posted and so append it to the message area
 		if (lineCount_ < length) {
-			$("#messages").append(lines[lastLine_]);
+			$("#chatBox").append(lines[lastLine_]);
 			setLines(length, lineCount_);
 			
+		}
+		//Auto scroll to new message
+		var newScrollHeight = $("#chatBox").prop('scrollHeight');
+		if (newScrollHeight > lastScrollHeight) {
+			$("#chatBox").scrollTop(newScrollHeight);
 		}
 	});
 }

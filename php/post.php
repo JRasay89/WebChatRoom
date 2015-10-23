@@ -15,7 +15,7 @@
 		date_default_timezone_set('America/Los_Angeles');
 		
 		$file = fopen("../chatLog.txt", "a");
-		fwrite($file,"<div class='msgln'>(".date("g:i A").") <b>".$_SESSION['username']."</b>: ".stripslashes(htmlspecialchars($chatText))."<br></div>" .PHP_EOL);
+		fwrite($file,"<div class='msgContainer'>(".date("g:i A").") <h4 id='username'>".$user_.":</h4> ".stripslashes(htmlspecialchars($chatText))."<br></div>" .PHP_EOL);
 		fclose($file);
 		
 		//Update last activity of user
