@@ -2,7 +2,7 @@ var lastLine_ = 0;
 var lineCount_ = 0;
 
 $(document).ready(function(){
-	$.post("php/session.php", function(data) {
+	$.post("php/main.php",{action: "getSession"}, function(data) {
 		var json = jQuery.parseJSON(data);
 		$("#currentUsername").text(json["username"]);
 	});
@@ -10,25 +10,22 @@ $(document).ready(function(){
 	//Post the message to post.php
 	$("#sendBtn").click(function() {
 		var userMsg = $("#message").val();
-		$.post("php/post.php",{message: userMsg});
+		$.post("php/main.php",{action: "post", message: userMsg});
 		$("#message").val("");
 		return false;
 	});
 	
 	//Delete user from the database and delete session
 	$("#exitBtn").click(function() {
-		$.post("php/session.php", function(data) {
-				var json = jQuery.parseJSON(data);
-				var user_ = json["username"];
-				$.post("php/logout.php");
-				//Delete user in database
-				$.post("php/deleteUser.php", {username: user_});	
-				//Delete session
-				$.post("php/deleteSession.php");			
-				//Go back login screen
-				window.location.href = 'index.html';
-		});			
-	});
+		//$.post("php/main.php",{action: "exitChat"});
+		$.ajax({
+			type:'post',
+			async:false,
+			url:"php/main.php",
+			data: {action: "exitChat"}
+		});
+		window.location.href = 'index.html';		
+	});	
 	
 	//Initialize line count and the line to be read
 	$.get("chatLog.txt", function(txt) {
@@ -37,8 +34,8 @@ $(document).ready(function(){
 		setLines(lines.length, lines.length-1);
 	});
 	
-	//Load chat, update chat every second
-	//loadChatLog();
+	//Update chat every second
+	loadChatLog();
 	setInterval (loadChatLog, 1000);
 });
 
@@ -48,7 +45,7 @@ function loadChatLog() {
 	$.get("chatLog.txt", function(txt) {
 		var lines = txt.split("\n");
 		var length = lines.length;
-		//If lineCount is less than currentLength, then a new message was posted and so append it to the message area
+		//If lineCount is less than currentLength, then a new message was posted and so append it to the chat box
 		if (lineCount_ < length) {
 			$("#chatBox").append(lines[lastLine_]);
 			setLines(length, lineCount_);

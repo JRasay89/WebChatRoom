@@ -25,7 +25,7 @@ else {
 // sql to create table
 $sql = "CREATE TABLE Users (
 id INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
-username VARCHAR(30) NOT NULL,
+username VARCHAR(30) UNIQUE NOT NULL,
 last_activity TIMESTAMP Default now()
 )";
 

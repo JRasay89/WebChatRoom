@@ -1,73 +1,25 @@
+$(document).ready(function(){
+	$("#joinBtn").click(join);
+});
+
 function join() {
-	var user = $("#username").val();
+	var username = $("#username").val();
 	//If input is empty or whitespace
-	if (!user.trim()) {
+	if (!username.trim()) {
 		alert("Please enter a username");
 	}
 	else {
-		$.post("php/checkUserExists.php", {username: user}, function(data) {
+		$.post("php/main.php", {action: "join", username: username}, function(data) {
 			var json = jQuery.parseJSON(data);
-			//Check if username exist
-			if (json["exists"] === true) {
-				//check if username has expired (if no activity for the last 10 mins or more)
-				//if true delete old record and create new record
-				isUserExpired(user);
-
+			if (json["success"] == true) {
+				//set the session 
+				$.post("php/main.php", {action: "setSession", uid: json["uid"], username: json["username"]});
+				window.location.href = 'chat_room.html';
 			}
-
-			//else create new record
 			else {
-				createUser(user);
+				alert(json["errorMsg"]);
 			}
 		});		
 	}
-
-}
-
-/*
- * Check if username has expired
- * @param user is the name to be check
- */
-function isUserExpired(user) {
-	$.post("php/checkUserExpired.php", {username: user}, function(data) {
-		var json = jQuery.parseJSON(data);
-		if (json["expired"] === true) {
-			//if expired delete old record
-			deleteUser(user);
-			//Create a new record
-			createUser(user);
-		}
-		else {
-			console.log("Username is already in used!");
-		}
-	});
-}
-
-function deleteUser(user) {
-	$.post("php/deleteUser.php", {username: user}, function(data) {
-		var json = jQuery.parseJSON(data);
-		if (!json["deleted"]) {
-			alert("Could not delete user!");
-		}
-	});	
-}
-
-function createUser(user) {
-	$.post("php/login.php", {username: user}, function(data) {
-		var json = jQuery.parseJSON(data);
-		//If user was successfully created, then enter the chatroom
-		if (json["success"] === true) {
-			alert("Username created!");
-			//alert(json["uid"]);
-			setSession(json["uid"], user);
-			window.location.href = 'chat_room.html';
-		}
-		else {
-			alert("Username could not be created!");
-		}
-	});		
-}
-
-function setSession(uid, user) {
-	$.post("php/setSession.php", {userID: uid, username: user});
+	return false;
 }

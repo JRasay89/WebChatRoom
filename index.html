@@ -14,16 +14,18 @@
 		<script src='js/login.js'></script>
 		<script src="js/checkSession.js"></script>
 		
-		<link href="css/myStyle.css" rel="stylesheet">
+		<link href="css/loginStyle.css" rel="stylesheet">
 	</head>
 	<body>
 		<div class="container">
 			<div id="inner_container">
 				<h2 id="header_text">Please enter a username</h2>
-				<div class="form-group">
-					<input type="text" class="form-control" id="username" placeholder="Username">
-				</div>
-				<button type="submit" class="btn btn-default" id="joinBtn" onClick="join()">Join</button>
+				<form action="">
+					<div class="form-group">
+						<input type="text" class="form-control" id="username" placeholder="Username">
+					</div>
+					<button type="submit" class="btn btn-default" id="joinBtn">Join</button>
+				</form>
 			</div>
 		</div>
 	</body>

@@ -2,8 +2,8 @@
 A simple chatroom using PHP, JavaScript, JQuery, and AJAX. I started this project so that 
 I could practice more on these languages and libraries.
 
-This app is unfinish. I will continue to work on it and improve my code.
-I will also try to add new features such as creating multiple chat rooms.
+This web app is unfinish. I will continue to work on it and improve my code.
+I will also try to add new features such as creating multiple chat rooms, and kicking out users who are idle after a certain time.
 
 ##Login
 ![Login](images/login_screenshot.png)
