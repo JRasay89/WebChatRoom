@@ -160,6 +160,26 @@ if (isset($_POST['action']) && $_POST['action'] != '') {
 			
 		}
 	}
+	else if ($action == "idle") {
+		//Delete session
+		session_start();
+		if(isset($_SESSION["username"])){
+			$username_ = $_SESSION["username"];
+			
+			$file = fopen("../chatLog.txt", "a");
+			fwrite($file,"<div class='msgContainer'> <i>User ". $username_ ." has left the chat.</i><br> </div>" .PHP_EOL);
+			fclose($file);
+			
+			//Delete user from the database
+			$dbFunctions->deleteUser($username_);
+		}		
+		//Destroy session
+		session_unset();
+		session_destroy(); 
+
+		$response["errorMsg"] = "You have been kicked out for inactivity.";
+		echo json_encode($response);
+	}
 	else {
 		$response["success"] = false;
 		$response["errorMsg"] = "Invalid action.";
