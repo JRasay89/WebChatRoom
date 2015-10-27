@@ -1,7 +1,7 @@
 var idleTime = 0;
 $(document).ready(function(){
 	//Increment idleTime every minute
-	setInterval(idleTimer, 1000);
+	setInterval(idleTimer, 60000);
 	
     //Reset idle time on mouse movement or keypress.
     $(this).mousemove(function (e) {
